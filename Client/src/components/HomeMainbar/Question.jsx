@@ -15,7 +15,7 @@ function Question({ question }) {
       </div>
 
       <div className="display-question-details">
-        <Link to={`./Question/${question.id}`} className="question-title-link">
+        <Link to={`./Questions/${question.id}`} className="question-title-link">
           {question.questionTitle}
         </Link>
         <div className="display-tags-time">

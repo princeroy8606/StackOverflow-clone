@@ -1,8 +1,8 @@
 import React from "react";
 import "./HomeMainbar.css";
-import { Link, redirect, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import QuestionLIst from "./QuestionLIst";
-import AskQusetion from "../../pages/AskQuestion/AskQusetion";
+// import AskQusetion from "../../pages/AskQuestion/AskQusetion";
 
 function HomeMainbar() {
   const location = useLocation();
@@ -13,22 +13,45 @@ function HomeMainbar() {
     {
       id: 1,
       votes: 1,
+      upVotes: 2,
+      downVotes: 3,
+
       noOfAnswer: 0,
       questionTitle: "What is a function?",
       questionBody: "It meant to be",
       questionTags: ["javascript", "R", "Python"],
       userPosted: "mano",
+      userId: 1,
       askedOn: "jan 1",
+      answer: [
+        {
+          answerBody: "Answer",
+          userAnswered: "kumar",
+          answeredOn: "jan 2",
+          userId: 2,
+        },
+      ],
     },
     {
       id: 2,
       votes: 1,
+      upVotes: 2,
+      downVotes: 3,
       noOfAnswer: 0,
       questionTitle: "What is a function?",
       questionBody: "It meant to be",
       questionTags: ["javascript", "R", "Python"],
       userPosted: "mano",
+      userId: 1,
       askedOn: "jan 1",
+      answer: [
+        {
+          answerBody: "Answer",
+          userAnswered: "Ravi",
+          answeredOn: "jan 5",
+          userId: 2,
+        },
+      ],
     },
   ];
   const checkAuth = () => {
