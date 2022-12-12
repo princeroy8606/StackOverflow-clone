@@ -1,13 +1,37 @@
-import React from "react";
 import "./Auth.css";
 import { useState } from "react";
 import icon from "../../assets/icon.png";
 import AboutAuth from "./AboutAuth";
+import { signup, login } from "../../actions/auth";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 function Auth() {
   const [isSignup, setIsSignup] = useState(false);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const handleSwitch = () => {
     setIsSignup(!isSignup);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!email && !password) {
+      alert("Enter e mail and password");
+    }
+    if (isSignup) {
+      if (!name) {
+        alert("Enter a name to Continue");
+      }
+      dispatch(signup({ name, email, password }, navigate));
+    } else {
+      dispatch(login({ email, password }, navigate));
+    }
   };
   return (
     <section className="auth-section">
@@ -16,16 +40,30 @@ function Auth() {
         {!isSignup && (
           <img src={icon} alt="stack-overflow -logo" className="login-logo" />
         )}
-        <form>
+        <form onSubmit={handleSubmit}>
           {isSignup && (
             <label htmlFor="name">
               <h4>Display Name</h4>
-              <input type="text" id="name" name="name" />
+              <input
+                type="text"
+                id="name"
+                name="name"
+                onChange={(e) => {
+                  setName(e.target.value);
+                }}
+              />
             </label>
           )}
           <label htmlFor="email">
             <h4>Email</h4>
-            <input type="email" name="email" id="email" />
+            <input
+              type="email"
+              name="email"
+              id="email"
+              onChange={(e) => {
+                setEmail(e.target.value);
+              }}
+            />
           </label>
           <label htmlFor="password">
             <div className="password">
@@ -34,7 +72,14 @@ function Auth() {
                 <h4 className="fgrt-password">Forgot Password ?</h4>
               )}
             </div>
-            <input type="password" name="password" id="password" />
+            <input
+              type="password"
+              name="password"
+              id="password"
+              onChange={(e) => {
+                setPassword(e.target.value);
+              }}
+            />
             {isSignup && (
               <p>
                 Passwords must contain at least eight characters,
