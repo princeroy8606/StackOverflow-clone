@@ -6,7 +6,7 @@ import QuestionLIst from "./QuestionLIst";
 
 function HomeMainbar() {
   const location = useLocation();
-  const user = "null";
+  const user = "1";
   const navigate = useNavigate();
 
   var questionList = [
