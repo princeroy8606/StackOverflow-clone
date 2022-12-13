@@ -22,7 +22,7 @@ const AskQusetion = () => {
           questionTitle,
           questionBody,
           questionTags,
-          // userPosted: User.result.name,
+          // userPosted: User.result.name,.
         },
         navigate
       )

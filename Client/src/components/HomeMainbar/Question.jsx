@@ -5,7 +5,7 @@ function Question({ question }) {
   return (
     <div className="display-question-container">
       <div className="display-votes-ans">
-        <p>{question.votes}</p>
+        <p>{question.upVotes-question.downVotes}</p>
         <p>Votes</p>
       </div>
 

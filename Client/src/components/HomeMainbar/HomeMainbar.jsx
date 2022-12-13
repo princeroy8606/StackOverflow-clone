@@ -2,12 +2,16 @@ import React from "react";
 import "./HomeMainbar.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import QuestionLIst from "./QuestionLIst";
+import { useSelector } from "react-redux";
 // import AskQusetion from "../../pages/AskQuestion/AskQusetion";
 
 function HomeMainbar() {
   const location = useLocation();
   const user = "1";
   const navigate = useNavigate();
+
+  const questionsLis = useSelector(state => state.questionReducer)
+  console.log(questionsLis)
 
   var questionList = [
     {
@@ -76,11 +80,11 @@ function HomeMainbar() {
         </button>
       </div>
       <div>
-        {questionList === null ? (
+        {questionList/*.data*/ === null ? (
           <h1>Loading...</h1>
         ) : (
           <>
-            <p>{questionList.length} questions</p>
+            <p>{questionList/*.data*/.length} questions</p>
 
             <QuestionLIst questionList={questionList} />
           </>

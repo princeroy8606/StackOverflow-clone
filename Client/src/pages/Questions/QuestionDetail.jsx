@@ -1,13 +1,50 @@
-import React from "react";
-import { Link, useParams } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import upVote from "../../assets/arrow-up.png";
 import downVote from "../../assets/arrow-down.png";
 import "./Questions.css";
 import Avatar from "../../components/Avatar/Avatar";
 import DisplayAnswer from "./DisplayAnswer";
+import { useDispatch, useSelector } from "react-redux";
+import { postAnswer } from "../../actions/question";
+import moment from "moment";
+import copy from "copy-to-clipboard";
 
 function QuestionDetail() {
   const { id } = useParams();
+  const questionsLis = useSelector((state) => state.questionReducer);
+
+  const [Answer, setAnswer] = useState("");
+  const Navigate = useNavigate();
+  const dispatch = useDispatch();
+  const User = useSelector((state) => state.currentUserReducer);
+  const handlePostAnswer = (e, answerLength) => {
+    e.preventDefault();
+    if (User !== null) {
+      alert("Login or sign up to answer a question");
+      Navigate("/Auth");
+    } else {
+      if (Answer === "") {
+        alert("Enter an answer before submitting");
+      } else {
+        dispatch(
+          postAnswer({
+            id,
+            noOfAnswer: answerLength + 1,
+            answerBody: Answer,
+            // userAnswered: User.result.name,
+          })
+        );
+      }
+    }
+  };
+  const location = useLocation();
+  const url = "http://localhost:3000";
+  const handleShare = () => {
+    copy(url + location.pathname);
+    alert('Copied url :'+url+location.pathname)
+  }; 
+
   var questionList = [
     {
       id: "1",
@@ -59,7 +96,7 @@ function QuestionDetail() {
       ) : (
         <>
           {questionList
-            .filter((question) => question.id === id)
+            /*.data*/ .filter((question) => question.id === id)
             .map((question) => (
               <div key={question.id}>
                 <section className="question-details-container">
@@ -79,7 +116,11 @@ function QuestionDetail() {
                       </div>
                       <div className="question-actions-user">
                         <div>
-                          <button type="button" className="edit-question-btn">
+                          <button
+                            type="button"
+                            className="edit-question-btn"
+                            onClick={handleShare}
+                          >
                             Share
                           </button>
                           <button type="button" className="edit-question-btn">
@@ -87,7 +128,9 @@ function QuestionDetail() {
                           </button>
                         </div>
                         <div>
-                          <p>Asked {question.askedOn}</p>
+                          <p>
+                            Asked {/*moment*/ question.askedOn /*.fromNow()*/}
+                          </p>
                           <Link
                             to={`/User/${question.userId}`}
                             className="user-link"
@@ -106,13 +149,25 @@ function QuestionDetail() {
                 {question.noOfAnswer !== 0 && (
                   <section>
                     <h3>{question.noOfAnswer}Answers</h3>
-                    <DisplayAnswer key={question.id} question={question} />
+                    <DisplayAnswer key={question.id} question={question}  handleShare={handleShare} />
                   </section>
                 )}
                 <section className="post-ans-container">
                   <h3>Your Answer</h3>
-                  <form>
-                    <textarea name="" id="" cols="30" rows="10"></textarea>
+                  <form
+                    onSubmit={(e) => {
+                      handlePostAnswer(e, question.answer.length);
+                    }}
+                  >
+                    <textarea
+                      name=""
+                      id=""
+                      cols="30"
+                      rows="10"
+                      onChange={(e) => {
+                        setAnswer(e.target.value);
+                      }}
+                    ></textarea>
                     <br />
                     <input
                       type="submit"

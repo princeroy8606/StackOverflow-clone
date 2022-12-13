@@ -16,8 +16,7 @@ const QuestionSchema = mongoose.Schema({
       userAnswered: String,
       userId: String,
       answerOn: { type: Date, default: Date.now },
-    },
-  ],
+    }],
 });
 
 export default mongoose.model("Question", QuestionSchema);
