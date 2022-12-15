@@ -4,6 +4,7 @@ import Home from "./pages/Home/Home";
 import Questions from "./pages/Questions/Questions";
 import AskQusetion from "./pages/AskQuestion/AskQusetion";
 import DisplayQuestion from "./pages/Questions/DisplayQuestion";
+import Tags from "./pages/Tags/Tags";
 function AllRoute() {
   return (
     <Routes>
@@ -11,7 +12,8 @@ function AllRoute() {
       <Route path="/Auth" element={<Auth />} />
       <Route path="/Questions" element={<Questions />} />
       <Route path="/AskQuestion" element={<AskQusetion />} />
-      <Route path="/Questions/:id" element={<DisplayQuestion/>} />
+      <Route path="/Questions/:id" element={<DisplayQuestion />} />
+      <Route path="/Tags" element={<Tags />} />
     </Routes>
   );
 }
