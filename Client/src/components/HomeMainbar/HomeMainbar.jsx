@@ -11,7 +11,6 @@ function HomeMainbar() {
   const navigate = useNavigate();
 
   const questionsLis = useSelector(state => state.questionReducer)
-  console.log(questionsLis)
 
   var questionList = [
     {

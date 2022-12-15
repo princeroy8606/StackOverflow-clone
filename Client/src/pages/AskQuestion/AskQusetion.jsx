@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import "./AskQusetion.css";
-import { askQuestion } from "../../actions/question";
+import { AskQuestion } from "../../actions/question";
 
 const AskQusetion = () => {
   const [questionTitle, setQuestionTitle] = useState();
@@ -17,12 +17,13 @@ const AskQusetion = () => {
     e.preventDefault();
 
     dispatch(
-      askQuestion(
+      AskQuestion(
         {
           questionTitle,
           questionBody,
           questionTags,
-          // userPosted: User.result.name,.
+          userPosted: User?.result.name,
+          userId :User?.result.id
         },
         navigate
       )

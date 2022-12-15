@@ -1,23 +1,36 @@
 import { useEffect } from "react";
 import "./Navbar.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Logo from "../../assets/logo.png";
 import Search from "../../assets/search.svg";
 import Avatar from "../Avatar/Avatar";
-import {useSelector,useDispatch} from 'react-redux'
+import decode from "jwt-decode";
+import { useSelector, useDispatch } from "react-redux";
 import { setCurrentUser } from "../../actions/currentUser";
 
-
 export const Navbar = () => {
-  const dispatch =useDispatch()
-  var User = '1'
-  useSelector((state)=>(state.currentUserReducer))
-  JSON.parse(localStorage.getItem('Profile'))
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  var User = "1";
+  useSelector((state) => state.currentUserReducer);
+  JSON.parse(localStorage.getItem("Profile"));
 
-useEffect(()=>{
-  dispatch(setCurrentUser(JSON.parse(localStorage.getItem('Profile'))))
-},[dispatch])
- 
+  const handleLogout = () => {
+    dispatch({ type: "LOGOUT" }); navigate("/");
+    dispatch(setCurrentUser(null));
+  };
+
+  useEffect(() => {
+    const token = User?.token;
+    if (token) {
+      const decodedToken = decode(token);
+      if (decodedToken.exp * 1000 < new Date().getTime()) {
+        handleLogout();
+      }
+    }
+    dispatch(setCurrentUser(JSON.parse(localStorage.getItem("Profile"))));
+  }, [dispatch]);
+
   return (
     <nav className="main-nav">
       <div className="navbar">
@@ -51,10 +64,14 @@ useEffect(()=>{
               color="white"
               cursor="pointer"
             >
-              <Link to="/User" style={{textDecoration:'none'}}>M</Link>
+              <Link to="/User" style={{ textDecoration: "none" }}>
+                M
+              </Link>
             </Avatar>
 
-            <button className="nav-item nav-link">Log out</button>
+            <button className="nav-item nav-link" onClick={handleLogout}>
+              Log out
+            </button>
           </>
         )}
       </div>

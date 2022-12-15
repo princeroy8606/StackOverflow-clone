@@ -6,7 +6,7 @@ import "./Questions.css";
 import Avatar from "../../components/Avatar/Avatar";
 import DisplayAnswer from "./DisplayAnswer";
 import { useDispatch, useSelector } from "react-redux";
-import { postAnswer } from "../../actions/question";
+import { postAnswer, deleteQuestion , voteQuestion} from "../../actions/question";
 import moment from "moment";
 import copy from "copy-to-clipboard";
 
@@ -15,14 +15,15 @@ function QuestionDetail() {
   const questionsLis = useSelector((state) => state.questionReducer);
 
   const [Answer, setAnswer] = useState("");
-  const Navigate = useNavigate();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const User = useSelector((state) => state.currentUserReducer);
+
   const handlePostAnswer = (e, answerLength) => {
     e.preventDefault();
     if (User !== null) {
       alert("Login or sign up to answer a question");
-      Navigate("/Auth");
+      navigate("/Auth");
     } else {
       if (Answer === "") {
         alert("Enter an answer before submitting");
@@ -32,19 +33,36 @@ function QuestionDetail() {
             id,
             noOfAnswer: answerLength + 1,
             answerBody: Answer,
-            // userAnswered: User.result.name,
+            userAnswered: User?.result.name,
+            userId: User?.result.id,
           })
         );
       }
     }
   };
+
+  //
   const location = useLocation();
   const url = "http://localhost:3000";
   const handleShare = () => {
     copy(url + location.pathname);
-    alert('Copied url :'+url+location.pathname)
-  }; 
+    alert("Copied url :" + url + location.pathname);
+  };
+  //
 
+  //
+  const handleDelete = () => {
+    dispatch(deleteQuestion(id, navigate));
+  };
+  //
+
+  const handleUpVote = () => {
+    dispatch(voteQuestion(id, "upVote", User?.result.id));
+  };
+
+  const handleDownVote = () => {
+    dispatch(voteQuestion(id, "downVote", User?.result.id));
+  };
   var questionList = [
     {
       id: "1",
@@ -103,9 +121,19 @@ function QuestionDetail() {
                   <h1>{question.questionTitle}</h1>
                   <div className="question-details-container-2">
                     <div className="question-votes">
-                      <img src={upVote} width="18" className="votes-icon" />
-                      <p>{question.upVotes - question.downVotes}</p>
-                      <img src={downVote} width="18" className="votes-icon" />
+                      <img
+                        src={upVote}
+                        width="18"
+                        className="votes-icon"
+                        onClick={handleUpVote}
+                      />
+                      <p>{question.upVotes.length - question.downVotes.length}</p>
+                      <img
+                        src={downVote}
+                        width="18"
+                        className="votes-icon"
+                        onClick={handleDownVote}
+                      />
                     </div>
                     <div style={{ width: "100%", marginLeft: "1rem" }}>
                       <p className="question-body">{question.questionBody}</p>
@@ -123,9 +151,16 @@ function QuestionDetail() {
                           >
                             Share
                           </button>
-                          <button type="button" className="edit-question-btn">
-                            Delete
-                          </button>
+
+                          {User?.result?.id === question?.userId && (
+                            <button
+                              type="button"
+                              className="edit-question-btn"
+                              onClick={handleDelete}
+                            >
+                              Delete
+                            </button>
+                          )}
                         </div>
                         <div>
                           <p>
@@ -149,7 +184,11 @@ function QuestionDetail() {
                 {question.noOfAnswer !== 0 && (
                   <section>
                     <h3>{question.noOfAnswer}Answers</h3>
-                    <DisplayAnswer key={question.id} question={question}  handleShare={handleShare} />
+                    <DisplayAnswer
+                      key={question.id}
+                      question={question}
+                      handleShare={handleShare}
+                    />
                   </section>
                 )}
                 <section className="post-ans-container">
