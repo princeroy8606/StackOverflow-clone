@@ -3,9 +3,11 @@ const usersReducer = (states = [], action) => {
     case "FETCH_USERS":
       return action.payload;
 
+    case "UPDATE_CURRENT_USER":
+      return states.map((state) => state.id === action.payload.id? action.payload:state);
     default:
       return states;
   }
-}; 
+};
 
 export default usersReducer;

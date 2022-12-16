@@ -25,3 +25,4 @@ export const deleteAnswer = (id, answerId, noOfAnswer) =>API.patch(`/answer/dele
 
 export const fetchAllUsers = () => API.get('/user/getAllUsers')
  
+export const updatedProfile = (id,updateData) => API.patch(`/user/update/${id}`,updateData)
