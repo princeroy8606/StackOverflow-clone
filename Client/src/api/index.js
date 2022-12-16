@@ -6,6 +6,7 @@ API.interceptors.request.use((req)=>{
     if(localStorage.getItem('Profile')){
         req.headers.authorization = `Bearer ${JSON.parse(localStorage.getItem("Profile")).token}`
     }
+    return req;
 })
 
 export const logIn = (authData) => API.post("/user/login", authData,console.log(authData));
@@ -21,3 +22,6 @@ export const voteQuestion = (id, value, userId) =>API.patch(`/questions/vote/${i
 
 export const postAnswer=(id, noOfAnswer, answerBody, userAnswered, userId)=>API.patch(`/answer/post/${id}`,{noOfAnswer,answerBody,userAnswered,userId,});
 export const deleteAnswer = (id, answerId, noOfAnswer) =>API.patch(`/answer/delete/${id}`, { answerId, noOfAnswer });
+
+export const fetchAllUsers = () => API.get('/user/getAllUsers')
+ 

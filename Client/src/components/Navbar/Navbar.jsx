@@ -16,7 +16,8 @@ export const Navbar = () => {
   JSON.parse(localStorage.getItem("Profile"));
 
   const handleLogout = () => {
-    dispatch({ type: "LOGOUT" }); navigate("/");
+    dispatch({ type: "LOGOUT" });
+    navigate("/");
     dispatch(setCurrentUser(null));
   };
 
@@ -64,7 +65,10 @@ export const Navbar = () => {
               color="white"
               cursor="pointer"
             >
-              <Link to="/User" style={{ textDecoration: "none" }}>
+              <Link
+                to={`/Users/${User?.result?.id}`}
+                style={{ textDecoration: "none" }}
+              >
                 M
               </Link>
             </Avatar>

@@ -24,7 +24,7 @@ function LeftSidebar() {
         <NavLink to="/Tags" className="side-nav-links" activeClassName="active">
           <p>Tags</p>
         </NavLink>
-        <NavLink to="/User" className="side-nav-links" activeClassName="active">
+        <NavLink to="/Users" className="side-nav-links" activeClassName="active">
           <p>User</p>
         </NavLink>
       </nav>
